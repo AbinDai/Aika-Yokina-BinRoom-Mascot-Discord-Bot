@@ -1,6 +1,6 @@
 # Aika Yokina, BinRoom Mascot Discord Bot
 
-<div align="center"> <img src="https://cdn.discordapp.com/attachments/863959650448703538/1541536432685060196/latihan_affinity.png?ex=6a8df32d&is=6a8ca1ad&hm=72006f4ad607a0b51855ae4a1c05f5d776b10dc158d44e55fc1a3c7c3e9e62b0&" width="70%" />
+<div align="center"> <img src="https://cdn.discordapp.com/attachments/863959650448703538/1541536432685060196/latihan_affinity.png?ex=6a8df32d&is=6a8ca1ad&hm=72006f4ad607a0b51855ae4a1c05f5d776b10dc158d44e55fc1a3c7c3e9e62b0&" width="80%" />
 </div>
 
 ### Ringkasan
@@ -18,13 +18,14 @@ Berkat fitur Qwen 3.6 27B, Aika bisa merespon pesan teks dan gambar. Jika user m
 
 #### Command pada roleplay yang bisa digunakan (support prefiks `ak!` dan slash `/`):
 - `memory_status`: mengecek kapasitas memori Aika (ingatannya) tentangmu. 
-<div align="left" style="margin-left: 30px;">
+Dikarenakan keterbatasan varian gratisan dari Groq, Aika dibatasi hanya bisa menyimpan 24 pesan per orang. Jika kapasitas penuh, chat paling lama akan otomatis dihapus saat ada chat baru masuk.
+
+<div align="center" style="margin-left: 30px;">
 	<img src="https://cdn.discordapp.com/attachments/863959650448703538/1541539309918748774/image.png?ex=6a8df5db&is=6a8ca45b&hm=aa09ee74f0d2c27faa6850d01b8b75fe331f58a16cbd1827e664d279fe38cc11&" width="50%" />
 </div>
-	Dikarenakan keterbatasan varian gratisan dari Groq, Aika dibatasi untuk hanya bisa menyimpan 24 pesan per orang. Jika kapasitas penuh, chat paling lama akan otomatis dihapus saat ada chat baru masuk.
 
 - `reset_memori`: menghapus seluruh riwayat percakapan dengan Aika
-<div align="left" style="margin-left: 30px;">
+<div align="center" style="margin-left: 30px;">
 	<img src="https://cdn.discordapp.com/attachments/863959650448703538/1541540432499048609/image.png?ex=6a8df6e7&is=6a8ca567&hm=2e964f315e98044cbaf532c76241a05f8e91af558ec970c1b8de8c1a692ffe45&" width="50%" />
 </div>
 
@@ -48,7 +49,7 @@ Dari sintesis inilah tercipta Aika, seorang maskot/OC yang punya esensi nyata mi
 ### Asal usul nama Aika Yokina
 Nama Aika Yokina digagas oleh Ilham/ZeoTrix dengan filosofi sebagai: Aika berarti karakter yang selalu mengiramakan cinta dan kasih sayang, Yokina berarti karakter yang selalu membawa keceriaan pada orang lain.
 
-<div align="center"> <img src="https://cdn.discordapp.com/attachments/1540950430014513202/1540950870106054727/image.png?ex=6a8dcc14&is=6a8c7a94&hm=7d36a10d7b53e71cbcc6a257d18ecad634019e2efa8059596940199eb2b4e942&" width="70%" /> <p><i>Screenshot chat filosofi nama Aika Yokina yang digagas oleh Ilham ZeoTrix</i></p> </div>
+<div align="center"> <img src="https://cdn.discordapp.com/attachments/1540950430014513202/1540950870106054727/image.png?ex=6a8dcc14&is=6a8c7a94&hm=7d36a10d7b53e71cbcc6a257d18ecad634019e2efa8059596940199eb2b4e942&" width="50%" /> <p><i>Screenshot chat filosofi nama Aika Yokina yang digagas oleh Ilham ZeoTrix</i></p> </div>
 
 Meski tampak bertolak belakang dengan sikap dinginnya, dia bukan berarti kejam, kok. Dari dalam, dia masih perhatian dan punya hati. 
 
@@ -58,4 +59,4 @@ Bot Aika di-hosting di [HeavenCloud](https://heavencloud.in/) menggunakan tier g
 
 ---
 
-<p align="center"> © 2022-2026 BinRoom & Bindai Tsumugi. Hak cipta dilindungi undang-undang.<br> Gabung BinRoom: [![Discord](https://img.shields.io/badge/Discord-Join%20Server-7289da?logo=discord&logoColor=pink)](https://discord.gg/cDMxkAkMYm) · Kunjungi kami: [![Carrd](https://img.shields.io/badge/Portfolio-Carrd-ff6b6b?logo=carrd&logoColor=pink)](https://YOURNAME.carrd.co) </p>
+<p align="center"> <small> © 2022-2026 BinRoom & Bindai Tsumugi. Hak cipta dilindungi undang-undang.<br> Gabung BinRoom: <a href="https://discord.gg/cDMxkAkMYm"><img src="https://img.shields.io/badge/Discord-Join%20Server-7289da?logo=discord&logoColor=pink" style="vertical-align: middle;" /></a> · Kunjungi kami: <a href="https://YOURNAME.carrd.co"><img src="https://img.shields.io/badge/Portfolio-Carrd-ff6b6b?logo=carrd&logoColor=pink" style="vertical-align: middle;" /></a> </small> </p>
