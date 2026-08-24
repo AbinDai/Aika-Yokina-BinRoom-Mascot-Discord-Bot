@@ -1,5 +1,6 @@
 __pycache__/
 cogs/__pycache__/
 *.pyc
+.git
 .env
 user_chats_with_aika.json
