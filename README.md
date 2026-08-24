@@ -55,8 +55,8 @@ Meski tampak bertolak belakang dengan sikap dinginnya, dia tidak berarti kejam, 
 
 ----
 ### Info hosting
-Bot Aika di-hosting di [HeavenCloud](https://heavencloud.in/) menggunakan tier gratisan. Layanan ini dipilih karena mereka menawarkan free tier yang gratis terus-menerus dan dijamin online 24/7, cocok untuk Aika yang berjaga di channel ranjau/honeypot server.
+Bot Aika di-hosting di [HeavenCloud](https://heavencloud.in/) menggunakan tier gratisan. Layanan ini dipilih karena mereka menawarkan free tier yang gratis terus-menerus dan dijamin online 24/7 dengan 95-99% uptime, cocok untuk Aika yang berjaga di channel ranjau/honeypot server.
 
 ---
 
-<p align="center"> <small> © 2022-2026 BinRoom & Bindai Tsumugi. Hak cipta dilindungi undang-undang.<br> Gabung BinRoom: <a href="https://discord.gg/cDMxkAkMYm"><img src="https://img.shields.io/badge/Discord-Join%20Server-7289da?logo=discord&logoColor=pink" style="vertical-align: middle;" /></a> · Kunjungi kami: <a href="https://YOURNAME.carrd.co"><img src="https://img.shields.io/badge/Portfolio-Carrd-ff6b6b?logo=carrd&logoColor=pink" style="vertical-align: middle;" /></a> </small> </p>
+<p align="center"> <small> © 2022-2026 BinRoom & Bindai Tsumugi. Hak cipta dilindungi undang-undang.<br> Gabung BinRoom: <a href="https://discord.gg/cDMxkAkMYm"><img src="https://img.shields.io/badge/Discord-Join%20Server-7289da?logo=discord&logoColor=pink" style="vertical-align: middle;" /></a> · Kunjungi kami: <a href="https://binroom.carrd.co/"><img src="https://img.shields.io/badge/Portfolio-Carrd-ff6b6b?logo=carrd&logoColor=pink" style="vertical-align: middle;" /></a> </small> </p>
