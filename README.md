@@ -55,7 +55,7 @@ Meski tampak bertolak belakang dengan sikap dinginnya, dia tidak berarti kejam, 
 
 ----
 ### Info hosting
-Bot Aika di-hosting di [HeavenCloud](https://heavencloud.in/) menggunakan tier gratisan. Layanan ini dipilih karena mereka menawarkan free tier yang gratis terus-menerus dan dijamin online 24/7 dengan 95-99% uptime, cocok untuk Aika yang berjaga di channel ranjau/honeypot server.
+Bot Aika di-hosting di [HeavenCloud](https://heavencloud.in/) menggunakan tier gratisan. Layanan ini dipilih karena mereka menawarkan free tier yang gratis terus-menerus dan dijamin online 24/7 dengan uptime 95-99%, cocok untuk Aika yang berjaga di channel ranjau/honeypot server.
 
 ---
 
