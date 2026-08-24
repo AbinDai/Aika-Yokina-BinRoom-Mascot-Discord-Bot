@@ -1,3 +1,4 @@
+
 # Aika Yokina, BinRoom Mascot Discord Bot
 
 <div align="center"> <img src="https://cdn.discordapp.com/attachments/863959650448703538/1541536432685060196/latihan_affinity.png?ex=6a8df32d&is=6a8ca1ad&hm=72006f4ad607a0b51855ae4a1c05f5d776b10dc158d44e55fc1a3c7c3e9e62b0&" width="80%" /> <p><i><small>Digambar dan didesain oleh Bindai Tsumugi; gambar dikomisi oleh Aioi</small></i></p>
@@ -33,6 +34,7 @@ Dikarenakan keterbatasan varian gratisan dari Groq, Aika dibatasi hanya bisa men
 ### Info umum tentang Aika
 <p align="center"> <table border="0" cellspacing="0" cellpadding="0" align="center" style="border: none !important; border-collapse: collapse; margin: 0 auto;"> <tr style="border: none !important;"> <td align="center" valign="middle" style="border: none !important; padding: 0 10px;"> <img src="https://cdn.discordapp.com/attachments/1540950430014513202/1540950430173892638/1.2-_ilustrasi_asli_with_info_19_apr_2022.png?ex=6a8dcbac&is=6a8c7a2c&hm=12899b9f1f55b2aadbb749b8c99d0a138ff5c68a3b3455eecfc9b733c095a16c&" height="350" style="max-width: 100%; object-fit: contain; border: none;" /> </td> <td align="center" valign="middle" style="border: none !important; padding: 0 10px;"> <img src="https://cdn.discordapp.com/attachments/1540950430014513202/1540950430547320912/where_it_all_started.png?ex=6a8dcbac&is=6a8c7a2c&hm=36fbc41d35ad138f50a8de970fdadced8417af652fa68588fc931ce0abb6e2fc&" height="350" style="max-width: 100%; object-fit: contain; border: none;" /> </td> </tr> </table> </p> <p align="center"><i>Kiri: ilustrasi awal Aika Yokina beserta chat para member kontributor<br>Kanan: chat owner saat menginisiasi tantangan</i></p>
 Aika Yokina adalah OC server yang tercipta dari hasil kreasi bersama. Pada April 2022, owner mencoba tantangan menggambar online 'Let's Make an OC Challenge.' Dari kesepuluh kategori, masing-masing diisi oleh para member. Kategorinya antara lain:
+
 1. Spesies: manusia (Yoga)
 2. Jenis kelamin: perempuan (Yogi)
 3. Warna kulit: putih (Anwar)
