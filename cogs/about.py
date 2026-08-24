@@ -35,12 +35,12 @@ class About(commands.Cog):
         )
         embed.add_field(
             name = "Tinggi",
-            value = "154cm",
+            value = "152cm",
             inline = True
         )
         embed.add_field(
             name = "Berat",
-            value = "~47kg",
+            value = "~55kg",
             inline = True
         )
         embed.add_field(
