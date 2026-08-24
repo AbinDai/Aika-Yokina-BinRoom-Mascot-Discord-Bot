@@ -1,20 +1,20 @@
 # Aika Yokina, BinRoom Mascot Discord Bot
 
-<div align="center"> <img src="https://cdn.discordapp.com/attachments/863959650448703538/1541536432685060196/latihan_affinity.png?ex=6a8df32d&is=6a8ca1ad&hm=72006f4ad607a0b51855ae4a1c05f5d776b10dc158d44e55fc1a3c7c3e9e62b0&" width="80%" />
+<div align="center"> <img src="https://cdn.discordapp.com/attachments/863959650448703538/1541536432685060196/latihan_affinity.png?ex=6a8df32d&is=6a8ca1ad&hm=72006f4ad607a0b51855ae4a1c05f5d776b10dc158d44e55fc1a3c7c3e9e62b0&" width="80%" /> <p><i><small>Digambar dan didesain oleh Bindai Tsumugi; gambar dikomisi oleh Aioi</small></i></p>
 </div>
 
 ### Ringkasan
-Repositori ini adalah source code, alias isi kodingannya dari bot ini. 
-Bot Aika Yokina adalah bot yang berperan sebagai maskot/OC (original character) server BinRoom. Tujuan dia dibuat yaitu untuk memperkuat representasi dirinya sebagai maskot server, sekaligus agar dia terkesan lebih dekat dengan para member, khususnya dengan kehadirannya di deretan member list, dan menjadi penyaji info utama pada halaman awal server.
+Repositori ini berisi source code, alias isi kodingan dari bot ini. 
+Bot Aika Yokina adalah bot yang berperan sebagai maskot/OC (original character) di 	server BinRoom. Tujuan dia dibuat yaitu untuk memperkuat representasi dirinya sebagai maskot server, sekaligus agar dia terkesan lebih dekat dengan para member, khususnya dengan kehadirannya di deretan member list, dan menjadi penyaji info utama pada halaman awal server.
 
 ### Tupoksi
-Selain tujuan pembuatannya, Aika juga punya dua tugas utama. Dia punya tugas khusus menjaga channel ranjau/honeypot khusus untuk mencegat akun-akun berbahaya yang mencoba membombardir link kripto/phishing/scam (khususnya yang foto X-nya Elon atau Mr Beast), Selain itu, Aika juga punya fitur AI chatbot yang bisa diajak ngobrol di channel khusus. Fitur ini diciptakan khusus agar bisa membawa Aika terasa lebih dekat dengan para member.
+Selain tujuan pembuatannya, Aika juga punya dua tugas utama. Dia punya tugas khusus menjaga channel ranjau/honeypot khusus untuk mencegat akun-akun berbahaya yang mencoba membombardir link kripto/phishing/scam (khususnya yang foto X-nya Elon atau MrBeast). Selain itu, Aika juga punya fitur AI chatbot yang bisa diajak ngobrol di channel khusus. Fitur ini diciptakan khusus agar Aika terasa lebih dekat dengan para member.
 
 ---
 ### Fitur khusus: AI roleplay chatbot
-Aika punya fitur AI roleplay chatbot yang ditenagai [Groq Qwen 3.6 27B](https://qwen.ai/blog?id=qwen3.6-27b). Pada channel khusus dalam server (atau bisa juga di-@mention jika di luar channel-nya), Aika akan merespon chat pengguna dan membalas sesuai kepribadiannya. Pengadaan fitur ini diharapkan agar bisa membawa maskot/OC fiksi ini lebih dekat dengan server dan para member, sekaligus memperkuat perwujudannya sebagai OC server. 
+Aika punya fitur AI roleplay chatbot yang ditenagai oleh [Groq Qwen 3.6 27B](https://qwen.ai/blog?id=qwen3.6-27b). Pada channel khusus dalam server (atau bisa juga di-@mention jika di luar channel-nya), Aika akan merespons chat pengguna dan membalas sesuai kepribadiannya. Pengadaan fitur ini diharapkan agar bisa membawa maskot/OC fiksi ini lebih dekat dengan server dan para member, sekaligus memperkuat perwujudannya sebagai OC server. 
 
-Berkat fitur Qwen 3.6 27B, Aika bisa merespon pesan teks dan gambar. Jika user menyertakan attachment ke dalam pesannya, Aika bisa memproses medianya dan membalas sesuai foto yang dikasih. Pendekatan ini sangat cocok untuk mereaksi pesan-pesan seperti memperlihatkan fan art ke Aika, atau screenshot gameplay, dll. 
+Berkat fitur Qwen 3.6 27B, Aika bisa merespons pesan teks dan gambar. Jika user menyertakan attachment ke dalam pesannya, Aika bisa memproses medianya dan membalas sesuai foto yang dikasih. Pendekatan ini sangat cocok untuk mereaksi pesan-pesan seperti memperlihatkan fan art ke Aika, atau screenshot gameplay, dll. 
 
 #### Command pada roleplay yang bisa digunakan (support prefiks `ak!` dan slash `/`):
 - `memory_status`: mengecek kapasitas memori Aika (ingatannya) tentangmu. 
@@ -47,15 +47,15 @@ Aika Yokina adalah OC server yang tercipta dari hasil kreasi bersama. Pada April
 Dari sintesis inilah tercipta Aika, seorang maskot/OC yang punya esensi nyata milik bersama, dan ditetapkan sebagai representasi server BinRoom.
 
 ### Asal usul nama Aika Yokina
-Nama Aika Yokina digagas oleh Ilham/ZeoTrix dengan filosofi sebagai: Aika berarti karakter yang selalu mengiramakan cinta dan kasih sayang, Yokina berarti karakter yang selalu membawa keceriaan pada orang lain.
+Nama Aika Yokina digagas oleh Ilham/ZeoTrix dengan filosofi: Aika berarti karakter yang selalu mengiramakan cinta dan kasih sayang, Yokina berarti karakter yang selalu membawa keceriaan pada orang lain.
 
 <div align="center"> <img src="https://cdn.discordapp.com/attachments/1540950430014513202/1540950870106054727/image.png?ex=6a8dcc14&is=6a8c7a94&hm=7d36a10d7b53e71cbcc6a257d18ecad634019e2efa8059596940199eb2b4e942&" width="50%" /> <p><i>Screenshot chat filosofi nama Aika Yokina yang digagas oleh Ilham ZeoTrix</i></p> </div>
 
-Meski tampak bertolak belakang dengan sikap dinginnya, dia bukan berarti kejam, kok. Dari dalam, dia masih perhatian dan punya hati. 
+Meski tampak bertolak belakang dengan sikap dinginnya, dia tidak berarti kejam, kok. Dari dalam, dia masih perhatian dan punya hati. 
 
 ----
 ### Info hosting
-Bot Aika di-hosting di [HeavenCloud](https://heavencloud.in/) menggunakan tier gratisan. Layanan ini dipilih karena mereka menawarkan free tier yang gratis terus-terusan dan dijamin online 24/7, cocok untuk Aika yang berjaga di channel ranjau/honeypot server.
+Bot Aika di-hosting di [HeavenCloud](https://heavencloud.in/) menggunakan tier gratisan. Layanan ini dipilih karena mereka menawarkan free tier yang gratis terus-menerus dan dijamin online 24/7, cocok untuk Aika yang berjaga di channel ranjau/honeypot server.
 
 ---
 
