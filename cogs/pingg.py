@@ -2,26 +2,28 @@ import discord
 from discord.ext import commands
 
 def warna_dinamis(latensi:int) -> int:
+    # WARNA EMBED SESUAI LATENSI, TAPI BIKIN JADI COMPLICATED: 
+    # SISTEM GRADASI WARNA! jadi sampai beda 1 angka pun bisa berubah warna nya (hyper accurate) 
+    # aowkaowkaowk
+
     # titik patokan: (latensi_ms, (R, G, B))
     PATOKAN = (
-        (0,    (0, 255, 102)),   #ijo terang
-        (100,  (46, 204, 113)),  #ijo muda
-        (200,  (163, 230, 53)),  #ijo kekuningan
-        (300,  (255, 235, 59)),  #kuning hangat
-        (400,  (255, 152, 0)),   #oren
-        (500,  (255, 0, 0)),     #merah darah menyala (FF0000)
-        (700,  (153, 0, 0)),     #merah tua
-        (900,  (91, 0, 24)),     #merah gelap / Crimson
-        (1000, (74, 14, 78)),    #ungu tua / Plum
+        (0,    (0,   255, 102)),   # ijo terang
+        (100,  (46,  204, 113)),   # ijo muda
+        (200,  (163, 230, 53 )),   # ijo kekuningan
+        (300,  (255, 235, 59 )),   # kuning hangat
+        (400,  (255, 152, 0  )),   # oren
+        (500,  (255, 0,   0  )),   # merah terang (FF0000)
+        (1000, (161, 3,   252)),   # ungu menyala (A103FC)
     )
     # batas bawah (0ms kebawah)
     if latensi <= PATOKAN[0][0]:
         r, g, b = PATOKAN[0][1]
         return (r << 16) + (g << 8) + b
     
-    # batas atas (1000ms keatas) -> ungu tua (0x2E003E)
+    # batas atas (1000ms keatas) -> ungu menyala (0xA103FC)
     if latensi >= PATOKAN[-1][0]:
-        return 0x2E003E
+        return 0xA103FC
     
     # itung gradasi rgb di antara 2 titik terdekat
     for i in range(len(PATOKAN)-1):
