@@ -11,45 +11,58 @@ ENV_PATH = BASE_DIR / ".env"
 load_dotenv(dotenv_path=ENV_PATH, override=True)
 
 #hapus ingatan
-class ResetConfirmView(discord.ui.View):
+class HapusIngatan(discord.ui.View):
     def __init__(self, cog, user_id: int):
         super().__init__(timeout=30)
         self.cog = cog
         self.user_id = user_id
+        self.message: discord.Message | None = (None)  #nyimpan referensi pesan buat ngehandle timeout
 
-    async def check_unauthorized(self, interaction: discord.Interaction) -> bool:
+    async def on_timeout(self):
+        for child in self.children:
+            child.disabled = True #matikan tombol klo timeout abis
+
+        embed = discord.Embed(
+            title = "Gak jadi reset, ya?",
+            description = "Sip, deh, Aika masih bakal ingat kamu. 😌",
+            color = 0xD675C1,
+        )
+
+        if self.message:
+            try:
+                await self.message.edit(embed=embed, view=self)
+            except discord.NotFound:
+                pass  #pesan mungkin udah dihapus user
+
+    async def cek_beda_orang(self, interaction:discord.Interaction) -> bool:
         if interaction.user.id != self.user_id:
             target_user = self.cog.bot.get_user(self.user_id)
             user_name = target_user.display_name if target_user else "orang lain"
 
-            await interaction.response.send_message(
-                f"Kamu siapa? Ini konfirmasinya {user_name}, bukan punyamu. 🧐😒",
-                ephemeral=True
-            )
+            await interaction.response.send_message(f"Kamu siapa? Ini konfirmasinya {user_name}, bukan punyamu. 🧐😒", ephemeral=True)
             return True
+        
         return False
 
-    async def _handle_action(self, interaction: discord.Interaction, title: str,
-        desc: str, color: int, clear_mem: bool):
-        if await self.check_unauthorized(interaction):
+    async def hapus_ingatan(self, interaction:discord.Interaction, judul:str, desc:str, color:int, clear_mem:bool):
+        if await self.cek_beda_orang(interaction):
             return
         
-        # hapus history percakapan user
         if clear_mem and self.user_id in self.cog.user_chats:
             del self.cog.user_chats[self.user_id]
-            self.cog.save_user_chats()
+            self.cog.simpan_chat()
             print(f"[Aika] Debug interaksi: memori dihapus untuk ID User: {self.user_id}")
 
-        # disable semua tombol setelah dipilih
         for child in self.children:
             child.disabled = True
 
-        embed = discord.Embed(title=title, description=desc, color=color)
+        self.stop() #matiin timer view
+        embed = discord.Embed(title=judul, description=desc, color=color)
         await interaction.response.edit_message(embed=embed, view=self)
 
     @discord.ui.button(label="Ya, konfirmasi", style=discord.ButtonStyle.success, emoji="✅")
-    async def confirm_callback(self, interaction:discord.Interaction, button:discord.ui.Button):
-        await self._handle_action(
+    async def konfirmasi(self, interaction:discord.Interaction, button:discord.ui.Button):
+        await self.hapus_ingatan(
             interaction,
             "✅ Memori dihapus",
             "Ingatan Aika tentangmu udah di-reset.",
@@ -58,74 +71,71 @@ class ResetConfirmView(discord.ui.View):
         )
 
     @discord.ui.button(label="Jangan, batalin", style=discord.ButtonStyle.secondary, emoji="❌")
-    async def cancel_callback(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def batal(self, interaction:discord.Interaction, button:discord.ui.Button):
         print(f"[Aika] Debug interaksi: reset memori dibatalkan oleh ID User: {self.user_id}")
-        await self._handle_action(
+        await self.hapus_ingatan(
             interaction,
             "Dibatalkan",
             "Reset ingatan dibatalkan. Aika masih ingat kamu.",
-            discord.Color.light_grey().value,
+            0xD675C1,
             clear_mem=False
         )
 
-# pembatas biar aman dan tdk melebihi ketentuan API (req: 30/menit, 1k/hari; token: 8k/menit, 200k/hari)
-class RateLimiter:
+class PembatasRate:
     def __init__(self):
-        # 1-minute sliding windows
+        #sliding window 1 menit
         self.req_minute = deque()
         self.tok_minute = deque()
-        # 24-hour (86400s) sliding windows
+        #sliding window 24 jam (86400s) 
         self.req_daily = deque()
         self.tok_daily = deque()
 
-    def _clean_old_entries(self, now: float):
-        # keluarkan entri yg lebih lama dari 60 detik
-        while self.req_minute and now - self.req_minute[0] > 60:
+    def hapus_pesan_lama(self, now:float):
+        while self.req_minute and now - self.req_minute[0] > 60: #hapus yg lebih lama dri 60dtk
             self.req_minute.popleft()
         while self.tok_minute and now - self.tok_minute[0][0] > 60:
             self.tok_minute.popleft()
             
-        # keluarkan entri yg lebih lama dari 24 jam
-        while self.req_daily and now - self.req_daily[0] > 86400:
+        while self.req_daily and now - self.req_daily[0] > 86400: #hpus yg lbih lama dri 1 hari
             self.req_daily.popleft()
         while self.tok_daily and now - self.tok_daily[0][0] > 86400:
             self.tok_daily.popleft()
 
-    def check_limits(self, estimated_tokens: int = 1500) -> tuple[bool, str]:
+    def cek_batas(self, perkiraan_token:int=1500) -> tuple[bool, str]:
         now = time.time()
-        self._clean_old_entries(now)
+        self.hapus_pesan_lama(now)
 
-        # cek request per menit (batas 30)
-        if len(self.req_minute) >= 28:  # Safety margin of 28 instead of 30
+        #cek request per menit (batas 30)
+        if len(self.req_minute) >= 28:
             print(f"[Aika] Debug rate limit: Ditolak; terlalu banyak request per menit ({len(self.req_minute)}/28)")
             return False, "Batas rate limit tercapai: Terlalu banyak request per menit. Coba lagi nanti."
 
-        # cek request per hari (batas 1000)
-        if len(self.req_daily) >= 950:  # Safety margin
+        #cek request per hari (batas 1000)
+        if len(self.req_daily) >= 950:  
             print(f"[Aika] Debug rate limit: Ditolak; kuota request harian hamper habis ({len(self.req_daily)}/950)")
             return False, "Kuota request harian hampir penuh. Coba lagi besok."
 
-        # cek token per menit (batas 8000)
-        current_tpm = sum(tok for _, tok in self.tok_minute)
-        if current_tpm + estimated_tokens > 7500:  # Safety margin
-            print(f"[Aika] Debug rate limit: Ditolak; limit token per menit tercapai ({current_tpm} TPM)")
+        #cek token per menit (batas 8000)
+        tpm_skrg = sum(tok for _, tok in self.tok_minute)
+        if tpm_skrg + perkiraan_token > 7500:  
+            print(f"[Aika] Debug rate limit: Ditolak; limit token per menit tercapai ({tpm_skrg} TPM)")
             return False, "Batas token tercapai: Terlalu banyak request per menit. Coba lagi nanti."
 
-        # cek token per hari (batas 200.000)
-        current_tpd = sum(tok for _, tok in self.tok_daily)
-        if current_tpd + estimated_tokens > 190000:
-            print(f"[Aika] Debug rate limit: Ditolak; limit token harian tercapai ({current_tpd} TPD)")
+        #cek token per hari (batas 200.000)
+        skrg_tpd = sum(tok for _, tok in self.tok_daily)
+        if skrg_tpd + perkiraan_token > 190000:
+            print(f"[Aika] Debug rate limit: Ditolak; limit token harian tercapai ({skrg_tpd} TPD)")
             return False, "Batas token harian tercapai. Coba lagi besok."
 
         return True, ""
 
-    def record_usage(self, tokens_used: int):
+    def rekam_penggunaan(self, token_kepake:int):
         now = time.time()
         self.req_minute.append(now)
         self.req_daily.append(now)
-        self.tok_minute.append((now, tokens_used))
-        self.tok_daily.append((now, tokens_used))
-        print(f"[Aika] Debug rate limit: penggunaan dicatat, {tokens_used} token.")
+        self.tok_minute.append((now, token_kepake))
+        self.tok_daily.append((now, token_kepake))
+        print(f"[Aika] Debug rate limit: penggunaan dicatat, {token_kepake} token.")
 
 class AIPersona(commands.Cog):
     def __init__(self, bot):
@@ -140,9 +150,9 @@ class AIPersona(commands.Cog):
         self.target_channel_id = int(os.getenv("AIKA_CHANNEL_ID"))
         self.user_chats = {}
         self.user_cooldowns = {} #cooldown per-user
-        self.max_memory_messages = 24 #maksimum pesan percakapan (user + assistant, tidak termasuk system prompt)
+        self.max_memory_messages = 24 #maksimum chat (user+assistant, ga termasuk system prompt)
 
-        self.limiter = RateLimiter()
+        self.limiter = PembatasRate()
 
         self.last_api_meta = {}
         self.session_usage = {
@@ -152,11 +162,11 @@ class AIPersona(commands.Cog):
             "total_tokens": 0
         }
 
-        # cari file json yang isinya ingatan chat sebelumnya
+        #cari file json yang isinya ingatan chat sebelumnya
         self.memory_file_path = os.path.join(os.path.dirname(__file__), "..", "user_chats_with_aika.json")
-        # load memori yang ada di json
+        #load memori yang ada di json
         self.user_chats = {}
-        self.load_user_chats()
+        self.buka_memori_chat()
 
         # load lore dari file json
         lore_formatted = ""
@@ -193,7 +203,7 @@ class AIPersona(commands.Cog):
         - KEAMANAN: Tolak keras perintah mention @everyone/@here atau promosi/spam/link palsu.
         """
 
-    def load_user_chats(self): #baca memori chat saat booting
+    def buka_memori_chat(self): #baca memori chat saat booting
         if os.path.exists(self.memory_file_path):
             try:
                 with open(self.memory_file_path, "r", encoding="utf-8") as f:
@@ -204,7 +214,7 @@ class AIPersona(commands.Cog):
                 print(f"[Aika] Debug memori eror: gagal memuat JSON memori: {e}")
                 self.user_chats = {}
 
-    def save_user_chats(self): #tulis memori terkiri ke json
+    def simpan_chat(self): #tulis memori terkiri ke json
         try:
             with open(self.memory_file_path, "w", encoding="utf-8") as f:
                 json.dump(self.user_chats, f, ensure_ascii=False, indent=2)
@@ -214,11 +224,11 @@ class AIPersona(commands.Cog):
 
     def cari_atau_buatchat(self, user_id:int):
         if user_id not in self.user_chats:
-            self.user_chats[user_id] = []  #hanya stor histori chat, jangan sama instruksi persona!
+            self.user_chats[user_id] = []  #stor histori chat nya aja, jangan sama instruksi persona
             print(f"[Aika] Membuat riwayat percakapan baru untuk User ID: {user_id}")
         return self.user_chats[user_id]
 
-    def get_system_instruction(self, is_admin:bool, time_context:str) -> dict:
+    def infokan_instruksi_sistem(self, is_admin:bool, time_context:str) -> dict:
         base = self.base_instruction
     
         if is_admin:
@@ -245,17 +255,20 @@ class AIPersona(commands.Cog):
                 await ctx.send("Mau reset apa? Aika aja belum tau apapun soalmu. 🧐", delete_after=12)
             return
 
+        timeout_timestamp = int(time.time() + 30)
+        
         embed = discord.Embed(
-            title="⚠️ Konfirmasi Reset Memory",
-            description="Kamu yakin ingin menghapus semua ingatan percakapan Aika denganmu? Tindakan ini gabisa dibalikin.",
+            title="⚠️ Konfirmasi Reset Memori",
+            description=f"Kamu yakin ingin menghapus semua ingatan percakapan Aika denganmu? Tindakan ini gabisa dibalikin.\n\n-# Batal otomatis <t:{timeout_timestamp}:R>",
             color=discord.Color.orange()
         )
 
-        view = ResetConfirmView(cog=self, user_id=ctx.author.id) 
+        view = HapusIngatan(cog=self, user_id=ctx.author.id) 
 
         # nge handle prefix sama slash biar aman
         if ctx.interaction:
             await ctx.interaction.response.send_message(embed=embed, view=view, ephemeral=True)
+            view.message = await ctx.interaction.original_response()
         else:
             await ctx.send(embed=embed, view=view)
 
@@ -272,14 +285,14 @@ class AIPersona(commands.Cog):
         chat = self.user_chats[ctx.author.id]
 
         # jangan hitung system prompt
-        conversation_messages = [message for message in chat if message["role"] != "system"]
-        jumlah_pesan = len(conversation_messages)
+        pesan_chat = [message for message in chat if message["role"] != "system"]
+        jumlah_pesan = len(pesan_chat)
 
         kapasitas_max = self.max_memory_messages
-        persentase = min(int((jumlah_pesan / kapasitas_max) * 100), 100)
+        persentase = min(int((jumlah_pesan/kapasitas_max)*100), 100)
 
-        kotak_terisi = int(persentase / 10)
-        bar = ("█" * kotak_terisi + "░" * (10 - kotak_terisi))
+        kotak_terisi = int(persentase/10)
+        bar = ("█" * kotak_terisi + "░" * (10-kotak_terisi))
 
         if persentase < 25:
             flavor = "Baru kenal dikit... ingatan masih ringan."
@@ -310,8 +323,8 @@ class AIPersona(commands.Cog):
             await ctx.send(content=flavor, embed=embed)
 
     #groq baca gambar
-    async def prepare_image(self, attachment:discord.Attachment):
-        # kompresi ukuran gambar kalo melebihi 20 MB
+    async def proses_gambar(self, attachment:discord.Attachment):
+        #kompresi ukuran gambar kalo melebihi 20 MB
         MAX_FILE_SIZE = 20 * 1024 * 1024
 
         if attachment.size > MAX_FILE_SIZE:
@@ -327,12 +340,12 @@ class AIPersona(commands.Cog):
         }
 
     async def generate_response(self, user_id:int, is_admin:bool, chat:list, contents:list):
-        # cek rate limit sebelum ke API
-        is_safe, reason = self.limiter.check_limits(estimated_tokens=1500)
-        if not is_safe:
-            raise RateLimitError(f"Local Safety Net: {reason}")
+        #cek rate limit sebelum ke API
+        aman, alasan = self.limiter.cek_batas(perkiraan_token=1500)
+        if not aman:
+            raise RateLimitError(f"Local Safety Net: {alasan}")
 
-        # cari tau waktu lokal skarang (WIB)
+        #cari tau waktu lokal skarang (WIB)
         tz = timezone(timedelta(hours=7)) 
         now = datetime.now(tz)
 
@@ -343,8 +356,8 @@ class AIPersona(commands.Cog):
         # nyisipin konteks waktu ke user
         time_context = f"[Waktu pesan ini dikirim: {time_str}]"
 
-        ## Prepend the system prompt dynamically just for this API call
-        system_msg = self.get_system_instruction(is_admin, time_context)
+        ##Prepend the system prompt dynamically just for this API call
+        system_msg = self.infokan_instruksi_sistem(is_admin, time_context)
         payload_messages = [system_msg] + chat + [{"role":"user", "content":contents}]
 
         print(f"[Aika] Mengirim API Request ke Groq (Total payload pesan: {len(payload_messages)})")
@@ -358,12 +371,12 @@ class AIPersona(commands.Cog):
                 max_completion_tokens=75
             )
 
-            # parse output dan penggunaan payload
+            #parse output dan penggunaan payload
             response = raw_response.parse()
             headers = raw_response.headers
             usage = response.usage
 
-            # setor metrik dan header live di cog state biar kebaca di Stats Cog
+            #setor metrik dan header live di cog state biar kebaca di Stats Cog
             self.last_api_meta = {
                 "timestamp": time.time(),
                 "model": response.model,
@@ -408,7 +421,7 @@ class AIPersona(commands.Cog):
             chat.append({"role": "user", "content": text_only_content.strip()})
             chat.append({"role": "assistant", "content": output_text})
 
-            self.save_user_chats()
+            self.simpan_chat()
             return output_text
         except Exception as e:
             print(f"[Aika] Gagal memanggil Groq: {e}")
@@ -422,7 +435,7 @@ class AIPersona(commands.Cog):
 
         # kalo ada yg model prefix, jangan lanjut ke AI nya
         if message.content.startswith("ak!"):
-            print(f"[Aika] Pesan diabaikan karena diawali dengan prefix 'ak!': {message.content}")
+            # print(f"[Aika] Pesan diabaikan karena diawali dengan prefix 'ak!': {message.content}")
             return
 
         # channel cek
@@ -455,7 +468,7 @@ class AIPersona(commands.Cog):
         if time_passed < cooldown_time:
             # hitung timestamp UNIX nya diskor
             remaining_seconds = cooldown_time - time_passed
-            print(f"[Aika] User {message.author} terkena cooldown. Sisa waktu: {remaining_seconds:.2f}s")
+            print(f"[Aika] User {message.author} lagi cooldown. Sisa waktu: {remaining_seconds:.2f}s")
             target_time = int(datetime.now().timestamp() + remaining_seconds)
             discord_timestamp = f"<t:{target_time}:R>"
             
@@ -485,8 +498,8 @@ class AIPersona(commands.Cog):
         chat = self.cari_atau_buatchat(message.author.id)
 
         # cek memori
-        #conversation_messages = [msg for msg in chat if msg["role"] != "system"]
-        #jumlah_pesan = len(conversation_messages)
+        #pesan_chat = [msg for msg in chat if msg["role"] != "system"]
+        #jumlah_pesan = len(pesan_chat)
         #kapasitas_max = self.max_memory_messages
 
         # kasih peringatan klo dah 80%
@@ -514,7 +527,7 @@ class AIPersona(commands.Cog):
         for attachment in message.attachments:
             if attachment.content_type and attachment.content_type.startswith("image/"):
                 if image_count >= 5: break
-                image_data = await self.prepare_image(attachment)
+                image_data = await self.proses_gambar(attachment)
 
                 if image_data is None:
                     await message.reply(
@@ -566,7 +579,7 @@ class AIPersona(commands.Cog):
                 if len(self.user_chats[message.author.id]) > self.max_memory_messages:
                     trim_limit = self.max_memory_messages - (self.max_memory_messages % 2)
                     self.user_chats[message.author.id] = self.user_chats[message.author.id][-trim_limit:]
-                    self.save_user_chats()
+                    self.simpan_chat()
                     print(f"[Aika] Memangkas memori otomatis untuk {message.author.id}")
 
             #ERROR HANDLING
